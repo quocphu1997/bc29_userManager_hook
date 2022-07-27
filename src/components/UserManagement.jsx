@@ -8,11 +8,12 @@ const UserContext = createContext();
 
 export default function UserManagement() {
   const selectorList = useSelector((state) => state.userReducers);
+  const newSelectorList = { ...selectorList };
   const [editUser, setEditUser] = useState({});
   useEffect(() => {
-    setEditUser(editUser === "" ? {} : selectorList.selectedUser);
+    setEditUser(editUser === "" ? {} : newSelectorList.selectedUser);
   }, [selectorList]);
-  // console.log(editUser);
+  console.log(newSelectorList);
   return (
     <UserContext.Provider value={editUser}>
       <div className="w-75 mx-auto mt-5">
