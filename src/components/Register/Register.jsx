@@ -92,8 +92,9 @@ export default function Register() {
     // }
   };
   const listEdit = useContext(UserContext);
+
   const { userName, fullName, email, passWord, phoneNumber, type } = listEdit || {};
-  console.log("listedit",listEdit);
+  console.log("listedit", listEdit);
   return (
     <div className="card p-0">
       <div className="card-header bg-warning text-white font-weight-bold">
