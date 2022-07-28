@@ -1,11 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function UserManager() {
+  const state = {
+    keyword: "",
+    selectedtype: "All",
+  };
+  const [keywords, setKeywords] = useState(state);
+  const selectorUser = useSelector((state) => state.userReducers); // lấy dữ liệu từ redux về qua hook useSelector
   const dispatch = useDispatch();
-  const selectoruser = useSelector((state) => state.userReducers); // lấy dữ liệu từ redux về qua hook useSelector
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setKeywords({
+      [name]: value,
+    });
+  };
+
+  console.log(keywords);
   const renderUserList = () => {
-    return selectoruser.userList.map((ele, index) => {
+    let data = selectorUser.userList;
+    data.filter((ele) => {
+      return (
+        ele.fullName
+          .toLowerCase()
+          .trim()
+          .indexOf(keywords.keyword.toLowerCase().trim()) !== -1
+      );
+    });
+
+    if (keywords.selectedtype !== "All") {
+      data = data.filter((ele) => {
+        return ele.type === keywords.selectedtype;
+      });
+    }
+
+    return data.map((ele, index) => {
       const { id, userName, fullName, email, phoneNumber, type } = ele;
       return (
         <tr className={`${index % 2 === 0 && "bg-light"}`} key={index}>
@@ -43,7 +72,7 @@ export default function UserManager() {
       );
     });
   };
-  // console.log(selectoruser);
+  // console.log(selectorUser);
   return (
     <div className="card p-0 mt-3">
       <div className="card-header font-weight-bold">USER MANAGEMENT</div>
@@ -51,6 +80,8 @@ export default function UserManager() {
         <div className="col-4">
           <div className="form-group mb-0">
             <input
+              onChange={handleChange}
+              name="keyword"
               type="text"
               placeholder="Search by full name..."
               className="form-control"
@@ -59,7 +90,11 @@ export default function UserManager() {
         </div>
         <div className="col-3 ml-auto">
           <div className="form-group mb-0">
-            <select className="form-control">
+            <select
+              onChange={handleChange}
+              name="selectedtype"
+              className="form-control"
+            >
               <option>All</option>
               <option>Client</option>
               <option>Admin</option>

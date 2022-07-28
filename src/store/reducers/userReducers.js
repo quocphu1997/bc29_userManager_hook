@@ -36,8 +36,8 @@ export const userReducers = (state = DEFAULT_STATE, { type, payload }) => {
       if (indx !== -1) {
         data[indx] = payload;
       }
-      state.userList = data;
       state.selectedUser = null;
+      state.userList = data;
       return { ...state };
     }
     case "SELECT_EDIT_USER": {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 // import { UserContext } from "../UserManagement";
 
@@ -29,7 +29,7 @@ export default function Register() {
   const [errorList, setErrorList] = useState(state.error);
   const formRef = useRef();
 
-  // console.log(formRef);
+  console.log(regisList);
 
   useEffect(() => {
     setRegisList({
@@ -74,6 +74,9 @@ export default function Register() {
         payload: regisList,
       });
     }
+    setRegisList({
+      ...state.value,
+    });
   };
 
   const handleBlur = (event) => {
@@ -101,12 +104,7 @@ export default function Register() {
       ...errorList,
       [name]: messError,
     });
-
-    // for (const key in errorList) {
-
-    // }
   };
-  // const listEdit = useContext(UserContext);
 
   const { userName, fullName, email, passWord, phoneNumber, type } =
     regisList || {};
