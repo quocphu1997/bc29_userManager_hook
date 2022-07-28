@@ -18,7 +18,6 @@ export default function UserManager() {
     });
   };
 
-  console.log(keywords.keyword.toLowerCase().trim());
   const renderUserList = () => {
     let data = selectorUser.userList.filter((ele) => {
       return (
