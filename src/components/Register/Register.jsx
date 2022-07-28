@@ -1,9 +1,8 @@
-import React, { createRef, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { UserContext } from "../UserManagement";
+// import { UserContext } from "../UserManagement";
 
 export default function Register() {
-  const fromRef = createRef();
   const state = {
     value: {
       id: "",
@@ -28,9 +27,15 @@ export default function Register() {
   const dispatch = useDispatch();
   const [regisList, setRegisList] = useState(state.value);
   const [errorList, setErrorList] = useState(state.error);
+  const formRef = useRef();
 
-  // console.log(selectorList.selectedUser);
-  // console.log(selectEdit);
+  // console.log(formRef);
+
+  useEffect(() => {
+    setRegisList({
+      ...selectorList.selectedUser,
+    });
+  }, [selectorList]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -38,6 +43,8 @@ export default function Register() {
       ...regisList,
       [name]: value,
     });
+    // console.log(event.target.checkValidity());
+    // console.log(!formRef.current?.checkValidity());
   };
 
   const handleSubmit = (event) => {
@@ -52,13 +59,21 @@ export default function Register() {
     //   }
     // }
 
-    if (!event.target.checkValidity()) {
+    if (event.target.checkValidity() === false) {
       return;
     }
-    dispatch({
-      type: "ADD_USER",
-      payload: regisList,
-    });
+
+    if (selectorList.selectedUser) {
+      dispatch({
+        type: "UPDATE_USER",
+        payload: regisList,
+      });
+    } else {
+      dispatch({
+        type: "ADD_USER",
+        payload: regisList,
+      });
+    }
   };
 
   const handleBlur = (event) => {
@@ -91,17 +106,17 @@ export default function Register() {
 
     // }
   };
-  const listEdit = useContext(UserContext);
+  // const listEdit = useContext(UserContext);
 
-  const { userName, fullName, email, passWord, phoneNumber, type } = listEdit || {};
-  console.log("listedit", listEdit);
+  const { userName, fullName, email, passWord, phoneNumber, type } =
+    regisList || {};
   return (
     <div className="card p-0">
       <div className="card-header bg-warning text-white font-weight-bold">
         REGISTER FORM
       </div>
       <div className="card-body">
-        <form ref={fromRef} noValidate onSubmit={handleSubmit}>
+        <form ref={formRef} noValidate onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-6">
               <div className="form-group">
@@ -227,7 +242,7 @@ export default function Register() {
             </div>
           </div>
           <button
-            disabled={!fromRef.current?.checkValidity()}
+            disabled={!formRef.current?.checkValidity()}
             className="btn btn-warning mr-2"
           >
             SAVE

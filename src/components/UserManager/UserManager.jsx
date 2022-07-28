@@ -27,7 +27,17 @@ export default function UserManager() {
             >
               EDIT
             </button>
-            <button className="btn btn-danger">DELETE</button>
+            <button
+              onClick={() => {
+                dispatch({
+                  type: "DELETED_USER",
+                  payload: ele,
+                });
+              }}
+              className="btn btn-danger"
+            >
+              DELETE
+            </button>
           </td>
         </tr>
       );
