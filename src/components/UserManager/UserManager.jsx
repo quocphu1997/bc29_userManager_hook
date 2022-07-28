@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 export default function UserManager() {
@@ -11,15 +11,16 @@ export default function UserManager() {
   const dispatch = useDispatch();
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     setKeywords({
+      ...keywords,
       [name]: value,
     });
   };
 
-  console.log(keywords);
+  console.log(keywords.keyword.toLowerCase().trim());
   const renderUserList = () => {
-    let data = selectorUser.userList;
-    data.filter((ele) => {
+    let data = selectorUser.userList.filter((ele) => {
       return (
         ele.fullName
           .toLowerCase()
